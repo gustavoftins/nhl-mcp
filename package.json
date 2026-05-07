@@ -31,5 +31,12 @@
     "node": ">=18"
   },
   "keywords": ["mcp", "nhl", "hockey", "model-context-protocol"],
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gustavoftins/nhl-mcp"
+  },
+  "homepage": "https://github.com/gustavoftins/nhl-mcp#readme",
+  "bugs": "https://github.com/gustavoftins/nhl-mcp/issues",
+  "author": "Gustavo Martins"
 }
