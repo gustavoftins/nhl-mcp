@@ -1,12 +1,21 @@
 import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import type { ScoreResponse } from "../src/api/types.js";
 
-// We mock the API client so tests don't make real HTTP requests
-jest.mock("../src/api/client.js");
+// jest.unstable_mockModule is the correct ESM-native API.
+// The mock function is captured in a closure so beforeEach can reconfigure it.
+const mockGetScores = jest.fn<() => Promise<ScoreResponse>>();
 
-import { handleGetScores } from "../src/tools/scores.js";
-import * as client from "../src/api/client.js";
+jest.unstable_mockModule("../src/api/client.js", () => ({
+  getScores: mockGetScores,
+  // errors.ts imports these for instanceof checks — provide stubs so the module links correctly.
+  NhlApiError: class NhlApiError extends Error {},
+  NhlNotFoundError: class NhlNotFoundError extends Error {},
+}));
 
-const MOCK_SCORES = {
+// Dynamic imports must come after unstable_mockModule so Jest intercepts them.
+const { handleGetScores } = await import("../src/tools/scores.js");
+
+const MOCK_SCORES: ScoreResponse = {
   date: "2024-11-15",
   games: [
     {
@@ -17,7 +26,7 @@ const MOCK_SCORES = {
       startTimeUTC: "2024-11-15T23:00:00Z",
       easternUTCOffset: "-05:00",
       venueUTCOffset: "-05:00",
-      gameState: "FINAL" as const,
+      gameState: "FINAL",
       gameScheduleState: "OK",
       awayTeam: {
         id: 10,
@@ -33,7 +42,7 @@ const MOCK_SCORES = {
         score: 2,
         sog: 28,
       },
-      periodDescriptor: { number: 3, periodType: "REG" as const },
+      periodDescriptor: { number: 3, periodType: "REG" },
       venue: { default: "TD Garden" },
     },
   ],
@@ -41,9 +50,7 @@ const MOCK_SCORES = {
 
 describe("handleGetScores", () => {
   beforeEach(() => {
-    (client.getScores as jest.MockedFunction<typeof client.getScores>).mockResolvedValue(
-      MOCK_SCORES,
-    );
+    mockGetScores.mockResolvedValue(MOCK_SCORES);
   });
 
   it("returns structured scores for a date", async () => {
@@ -62,10 +69,7 @@ describe("handleGetScores", () => {
   });
 
   it("returns a no-games message when the list is empty", async () => {
-    (client.getScores as jest.MockedFunction<typeof client.getScores>).mockResolvedValue({
-      date: "2024-07-01",
-      games: [],
-    });
+    mockGetScores.mockResolvedValue({ date: "2024-07-01", games: [] });
 
     const result = await handleGetScores({ date: "2024-07-01" });
     const parsed = JSON.parse(result.content[0].text);
@@ -74,9 +78,7 @@ describe("handleGetScores", () => {
   });
 
   it("returns a structured error when the API throws", async () => {
-    (client.getScores as jest.MockedFunction<typeof client.getScores>).mockRejectedValue(
-      new Error("network timeout"),
-    );
+    mockGetScores.mockRejectedValue(new Error("network timeout"));
 
     const result = await handleGetScores({});
     expect(result.isError).toBe(true);
