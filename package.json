@@ -1,6 +1,6 @@
 {
   "name": "nhl-mcp",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "description": "MCP server wrapping the unofficial NHL API (api-web.nhle.com)",
   "type": "module",
   "main": "dist/index.js",
@@ -30,14 +30,23 @@
   "engines": {
     "node": ">=18"
   },
-  "keywords": ["mcp", "nhl", "hockey", "model-context-protocol"],
+  "keywords": [
+    "mcp",
+    "nhl",
+    "hockey",
+    "model-context-protocol"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gustavoftins/nhl-mcp"
+    "url": "git+https://github.com/gustavoftins/nhl-mcp.git"
   },
   "homepage": "https://github.com/gustavoftins/nhl-mcp#readme",
   "bugs": "https://github.com/gustavoftins/nhl-mcp/issues",
   "author": "Gustavo Martins",
-  "files": ["dist", "README.md", "LICENSE"]
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
 }
