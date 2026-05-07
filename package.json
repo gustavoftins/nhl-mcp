@@ -1,0 +1,35 @@
+{
+  "name": "nhl-mcp",
+  "version": "0.1.0-alpha",
+  "description": "MCP server wrapping the unofficial NHL API (api-web.nhle.com)",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "nhl-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "typecheck": "tsc --noEmit",
+    "inspector": "npx @modelcontextprotocol/inspector node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.8",
+    "zod-to-json-schema": "^3.23.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0",
+    "jest": "^29.7.0",
+    "@jest/globals": "^29.7.0",
+    "ts-jest": "^29.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["mcp", "nhl", "hockey", "model-context-protocol"],
+  "license": "MIT"
+}
