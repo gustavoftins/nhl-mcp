@@ -38,5 +38,6 @@
   },
   "homepage": "https://github.com/gustavoftins/nhl-mcp#readme",
   "bugs": "https://github.com/gustavoftins/nhl-mcp/issues",
-  "author": "Gustavo Martins"
+  "author": "Gustavo Martins",
+  "files": ["dist", "README.md", "LICENSE"]
 }
