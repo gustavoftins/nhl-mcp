@@ -89,22 +89,15 @@ The community-maintained NHL API reference at [Zmalski/NHL-API-Reference](https:
 
 ## Cutting a release (maintainers only)
 
-Before releasing, make sure the full check suite passes locally:
+Bump the version in `package.json` as part of your PR:
 
 ```bash
-npm run typecheck
-npm run build
-npm test
+npm version patch --no-git-tag-version
+# or: minor / major
 ```
 
-Then bump the version, tag, and push:
+Open the PR, get it reviewed, and merge. When the PR lands on `main`, the `Publish` GitHub Actions workflow runs automatically — it typechecks, builds, tests, and publishes to npm. No manual tagging or pushing required.
 
-```bash
-# Replace 'patch' with 'minor' or 'major' as appropriate
-npm version patch
-git push --follow-tags
-```
-
-`npm version` updates `package.json`, commits the change, and creates a git tag (e.g. `v0.2.0`). Pushing the tag triggers the `Publish` GitHub Actions workflow, which re-runs the full check suite and then publishes to npm.
+If the version in `package.json` was not bumped before merging, the publish step will fail with a "version already exists" error from npm. Fix it by opening a new PR with the version bump.
 
 **Prerequisite:** The `nhl-mcp` package on npmjs.com must have this GitHub repository registered as a Trusted Publisher (package → Settings → Trusted Publishers → Add). No secret or token is needed — the workflow authenticates via GitHub Actions OIDC.
