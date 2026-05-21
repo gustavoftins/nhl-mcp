@@ -84,3 +84,27 @@ If you discover a field that's missing or incorrectly typed:
 ## Community reference
 
 The community-maintained NHL API reference at [Zmalski/NHL-API-Reference](https://github.com/Zmalski/NHL-API-Reference) is a useful cross-reference when working out endpoint shapes. Do not copy code from it, but feel free to validate your types against it.
+
+---
+
+## Cutting a release (maintainers only)
+
+Before releasing, make sure the full check suite passes locally:
+
+```bash
+npm run typecheck
+npm run build
+npm test
+```
+
+Then bump the version, tag, and push:
+
+```bash
+# Replace 'patch' with 'minor' or 'major' as appropriate
+npm version patch
+git push --follow-tags
+```
+
+`npm version` updates `package.json`, commits the change, and creates a git tag (e.g. `v0.2.0`). Pushing the tag triggers the `Publish` GitHub Actions workflow, which re-runs the full check suite and then publishes to npm.
+
+**Prerequisite:** The repository must have an `NPM_TOKEN` secret configured (GitHub repo → Settings → Secrets and variables → Actions). Generate the token at npmjs.com → Account → Access Tokens → Generate New Token → type: **Automation**.
