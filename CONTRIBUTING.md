@@ -107,4 +107,4 @@ git push --follow-tags
 
 `npm version` updates `package.json`, commits the change, and creates a git tag (e.g. `v0.2.0`). Pushing the tag triggers the `Publish` GitHub Actions workflow, which re-runs the full check suite and then publishes to npm.
 
-**Prerequisite:** The repository must have an `NPM_TOKEN` secret configured (GitHub repo → Settings → Secrets and variables → Actions). Generate the token at npmjs.com → Account → Access Tokens → Generate New Token → type: **Automation**.
+**Prerequisite:** The `nhl-mcp` package on npmjs.com must have this GitHub repository registered as a Trusted Publisher (package → Settings → Trusted Publishers → Add). No secret or token is needed — the workflow authenticates via GitHub Actions OIDC.
